@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer class="deep-purple accent-4" dark permanent>
+  <v-navigation-drawer class="_cont_aside" dark permanent>
       <v-img
       class="_img_ampip"
         lazy-src="../assets/logo_ampip.svg"
@@ -50,7 +50,7 @@
     <template v-slot:append>
       <div class="pa-2">
         <v-btn block @click="logout">
-          Logout
+          Cerrar Sesión
         </v-btn>
       </div>
     </template>
