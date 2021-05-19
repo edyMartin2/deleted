@@ -9,6 +9,7 @@
       </v-col>
       <v-col cols="10">
         <v-cotainer>
+        <h1 class="_h1_main">Corporativos</h1>
           <v-row>
             <v-col v-for="i in corps" :key="i" cols="3" class="my-3 px-3">
               <v-card class="mx-auto" max-width="100%">
