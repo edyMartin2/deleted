@@ -7,6 +7,7 @@
         </v-app>
       </v-col>
       <v-col cols="10" >
+        <h1 class="_h1_main">Naves</h1>
         <v-container class="container">
           <v-row justify="start" align="start">
                 <v-col cols="12">
@@ -19,7 +20,7 @@
                         width="100%"
                     >
 
-                      <v-toolbar-title>Naves   .....</v-toolbar-title>
+                      <h3 class="_h3_buscador">Buscar Naves</h3>
 
 
                       <template>

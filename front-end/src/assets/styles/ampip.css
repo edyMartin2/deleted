@@ -15,7 +15,9 @@ h6,
 .v-toolbar__title {
     font-family: 'Oswald', arial, sans-serif !important;
 }
-
+h1 {
+    margin-bottom: 30px;
+}
 /* ////////////////////////////////////////////////////////////// END GRAL */
 
 /* ////////////////////////////////////////////////////////////// ASIDE */
@@ -69,6 +71,31 @@ h6,
 }
 .v-toolbar__title {
     font-size: 1.8rem;
+}
+.v-sheet.v-card:not(.v-sheet--outlined) {
+    box-shadow: 0 2px 4px 4px rgba(0,0,0,.04);
+}
+._cont_dash {
+    display: flex;
+    flex-direction: column;
+
+}
+._cont_dash ._cont_value {
+    display: flex;
+    
+}
+._cont_dash ._cont_value div:first-child {
+    width: 200px;
+    text-align: right;
+    font-weight: 700;
+    padding-right: 8px;
+}
+._h1_main {
+    text-align: left;
+    margin-top: 30px;
+}
+._h3_buscador {
+    white-space: nowrap;
 }
 /* ////////////////////////////////////////////////////////////////// END MAIN */
 
