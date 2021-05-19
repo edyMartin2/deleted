@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import dashboard from "../components/dashboard";
+import dashboard from "../components/sideBar";
 import plusCard from "../components/plusCard";
 import popupParque from "../components/popupParque";
 import axios from "axios";

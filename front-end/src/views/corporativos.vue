@@ -45,7 +45,7 @@
 import axios from "axios";
 import VueCookies from "vue-cookies";
 var CryptoJS = require("crypto-js");
-import dashboard from "../components/dashboard";
+import dashboard from "../components/sideBar";
 import dial from "../components/dialog";
 export default {
   name: "corporativos",

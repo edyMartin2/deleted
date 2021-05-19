@@ -63,7 +63,7 @@
 <script>
 var CryptoJS = require("crypto-js");
 import VueCookies from "vue-cookies";
-import dashboard from "../components/dashboard";
+import dashboard from "../components/sideBar";
 import axios from "axios";
 export default {
   components: { dashboard },
