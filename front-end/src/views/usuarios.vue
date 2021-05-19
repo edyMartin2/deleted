@@ -18,7 +18,7 @@
               >
             
                 <v-card-text>
-                  <p>{{ i.email }}</p>
+                  <h3>{{ i.email }}</h3>
                   <p>{{ i.name }}</p>
                 </v-card-text>
                 <v-card-actions>

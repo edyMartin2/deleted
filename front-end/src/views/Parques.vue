@@ -49,8 +49,8 @@
                   max-width="100%"
               >
                 <v-card-text>
-                  <div>Parque</div>
-                  <p class="display-1 text--primary">
+                  <h3>Parque</h3>
+                  <p class="_p">
                     {{i.nombre_es}}
                   </p>
 

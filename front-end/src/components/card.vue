@@ -8,7 +8,7 @@
       <p class="display-1 text--primary">
       {{propsData.id_park}}
       </p>
-      <p v-if="propsData.name">{{propsData.name}}</p>
+      <h3 v-if="propsData.name">{{propsData.name}}</h3>
     </v-card-text>
     <v-card-actions>
       <v-btn
