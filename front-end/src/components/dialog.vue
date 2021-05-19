@@ -223,7 +223,7 @@ export default {
       } else {
         return "Sin datos";
       }
-    },
+    }, 
   },
 };
 </script>

@@ -312,6 +312,7 @@ class apiController extends AbstractActionController
                 $listUsuario['id'] = $item->getId();
                 $listUsuario['email'] = $item->getEmail();
                 $listUsuario['name'] = $item->getFullName();
+                $listUsuario['pass'] = $this->encript("dec", $item->getPassword() , "4MP1P");
 
                 array_push($arregloUsuario, $listUsuario);
             }
@@ -335,6 +336,7 @@ class apiController extends AbstractActionController
 
             $email = $this->params()->fromPost('email', 'q');
             $pass = $this->params()->fromPost('pass', 'q');
+            /*  $this->encript("dec", $item->getPassword() , "4MP1P"); */
             $decryptPass = $this->encript("enc", $pass, "4MP1P");
             $response = $this->entityManager->getRepository(userEntity::class)->findBy(['email' => $email, 'password' => $decryptPass, 'status' => 1]);
             $roleList = [];

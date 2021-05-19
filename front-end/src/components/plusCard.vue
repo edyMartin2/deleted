@@ -14,7 +14,6 @@
         <br />
       </v-card-text>
     </v-card>
-    <!-- Nueva nave -->
     <v-dialog v-model="newNave" max-width="730px">
       <v-card>
         <v-card-title>Agrega una nave</v-card-title>
@@ -51,7 +50,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- Nuevo parque -->
     <v-dialog v-model="newPark" max-width="730px">
       <v-card>
         <v-card-title>Agrega un parque</v-card-title>
@@ -260,37 +258,126 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- Nuevo cotp -->
-    <h1>gtgtg</h1>
+
     <v-dialog v-model="newCorp" max-width="730px">
       <v-card>
         <v-card-title>Agrega un corporativo</v-card-title>
         <v-container>
           <v-row>
-            <v-col cols="6">
+            <v-col md="6">
               <v-text-field
-                label="Nombre en español"
                 outlined
-                placeholder="Nombre"
+                label="Nombre" 
+                :rules="[rules.required]"
                 v-model="corp.name_es"
               ></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col md="6">
               <v-text-field
-                label="Nombre en ingles"
                 outlined
-                placeholder="Nombre"
+                label="Nombre en ingles" 
+                :rules="[rules.required]"
                 v-model="corp.name_en"
+              ></v-text-field>
+            </v-col>
+            <v-col md="6">
+              <v-text-field
+                outlined
+                label="Tipo de socio" 
+                :rules="[rules.required]"
+                v-model="corp.type"
+              ></v-text-field>
+            </v-col>
+
+            <v-col md="6">
+              <v-text-field
+                outlined
+                label="Codigo postal" 
+                :rules="[rules.required]"
+                v-model="corp.cp"
+                @keyup="watchCp"
+              ></v-text-field>
+            </v-col>
+            <v-col md="12">
+              <v-select
+                :items="cp"
+                label="Colonia"
+                placeholder="Colonia" 
+                :rules="[rules.required]"
+                outlined
+                v-model="corp.col"
+                item-text="response.asentamiento"
+                item-value="response.asentamiento"
+              ></v-select>
+            </v-col>
+            <v-col md="6">
+              <v-text-field
+                outlined
+                label="Estado" 
+                :rules="[rules.required]"
+                v-model="edo"
+                disabled
+              ></v-text-field>
+            </v-col>
+            <v-col md="6">
+              <v-text-field
+                outlined
+                label="Municipio" 
+                :rules="[rules.required]"
+                v-model="mun"
+                disabled
+              ></v-text-field>
+            </v-col>
+            <v-col md="2">
+              <v-select :items="lada" label="Lada" outlined 
+              :rules="[rules.required]"></v-select>
+            </v-col>
+            <v-col md="10">
+              <v-text-field
+                outlined
+                label="Numero de telefono" 
+                :rules="[rules.required]"
+                v-model="corp.cel"
+                type="number"
+              ></v-text-field>
+            </v-col>
+            <v-col md="6">
+              <v-text-field
+                outlined
+                label="Inversion actual en miles de pesos" 
+                :rules="[rules.required]"
+                v-model="corp.inv_act"
+                type="number"
+              ></v-text-field>
+            </v-col>
+            <v-col md="6">
+              <v-text-field
+                outlined
+                label="Inversion siguiente en miles de pesos" 
+                :rules="[rules.required]"
+                type="number"
+                v-model="corp.inv_ant"
+              ></v-text-field>
+            </v-col>
+            <v-col md="12">
+              <v-text-field
+                outlined
+                label="Inversion anterior en miles de pesos" 
+                :rules="[rules.required]"
+                type="number"
+                v-model="corp.inv_sig"
               ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
         <v-card-actions>
-          <v-btn color="green darken-1" text @click="addparque">
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="addCorp">
             Añadir
           </v-btn>
 
-          <v-btn color="green darken-1" text @click="newPark = false">
+          <v-btn color="green darken-1" text @click="newCorp = false">
             Cancelar
           </v-btn>
         </v-card-actions>
@@ -301,17 +388,19 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "plusCard",
 
   data() {
     return {
+      lada: ["+52", "+1"],
       newNave: false,
-      newPark: false,
       newCorp: false,
       name: "",
       parques: [],
       parque: "",
+      newPark: false,
       items: ["Privada", "Gubernamental"],
       menu1: false,
       date: "",
@@ -334,20 +423,34 @@ export default {
       key_corp: null,
       infra: null,
       markers: { x: 56.19605552778996, y: 111.13718986063111 },
-      copr:{
-        name_es:"",
-        name__en:"", 
-        typeSociety:"",
+      corp: {
+        lada: "",
+        name_es: "",
+        name_en: "",
+        type: "",
         address: "",
-        cp:"",
-        col:"",
-        edo:"",
-        cel:"",
-        logo:"",
-        inv_sig:"",
-        inv_act:"",
-        inv_ant:""
-      }
+        cp: "",
+        col: "",
+        edo: "",
+        mun: "",
+        cel: "",
+        logo: "",
+        inv_ant: "",
+        inv_act: "",
+        inv_sig: "",
+      },
+      cp: [],
+      rules: {
+        required: (value) => !!value || "Requerido.",
+        counter: (value) => value.length >= 8 || "Minimo 8 characters",
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid e-mail.";
+        },
+        counterThre: (value) => value.length >= 3 || "Minimo 3 caracteres",
+        phone: (value) => value.length <= 10 || "maximo 10 numeros",
+        cp: (value) => value.length <= 5 || "maximo 5 numeros",
+      },
     };
   },
   props: ["dialogs"],
@@ -417,9 +520,87 @@ export default {
         })
         .catch((e) => console.log(e));
     },
-    addCorp() {},
     add(target) {
       this.markers = target.latLng.toJSON();
+    },
+    watchCp() {
+      axios
+        .get(
+          `https://api-sepomex.hckdrk.mx/query/info_cp/${this.corp.cp}?token=${this.$store.state.token}`
+        )
+        .then((res) => {
+          this.cp = res.data;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    addCorp() {
+      var params = new URLSearchParams();
+      params.append("Corporativo", this.corp.name_es);
+      params.append("Nombre_es", this.corp.name_en);
+      params.append("tipoDeSocio", this.corp.type);
+      params.append("direccion", this.corp.address);
+      params.append("cp", this.corp.cp);
+      params.append("colonia", this.corp.col);
+      params.append("estado", this.edo);
+      params.append("municipio", this.mun);
+      /*  */
+      params.append("celular", this.corp.lada + " " + this.corp.cel);
+      params.append("inversionRealizadaAnterior", this.corp.inv_ant);
+      params.append("inversionRealizadaActual", this.corp.inv_act);
+      params.append("inversionAnualSiguiente", this.corp.inv_sig);
+      params.append("validadoPor", "admin");
+      params.append("status", "1");
+      params.append("habilitar", "1");
+      if (
+        this.corp.name_en != "" &&
+        this.corp.name_es != "" &&
+        this.corp.type != "" &&
+        this.corp.cp != "" &&
+        this.corp.col != "" &&
+        this.edo != "" &&
+        this.mun != "" &&
+        this.corp.cel != "" &&
+        this.corp.inv_ant != "" &&
+        this.corp.inv_act != "" &&
+        this.corp.inv_sig != ""
+      ) {
+        axios
+          .post(`${this.$store.state.url}/createcorp`, params)
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((e) => console.log(e));
+      } else{
+        Swal.fire({
+                icon: "error",
+                title: "Ooops ...",
+                text: "Por favor asegurate de llenar todos los datos",
+                backdrop: `
+                  rgba(255,0,0,0.1)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+              });
+      }
+    },
+  },
+  computed: {
+    edo() {
+      if (this.cp.length > 0) {
+        return this.cp[0].response.estado;
+      } else {
+        return "Sin datos";
+      }
+    },
+    mun() {
+      if (this.cp.length > 0) {
+        return this.cp[0].response.municipio;
+      } else {
+        return "Sin datos";
+      }
     },
   },
 };

@@ -9,7 +9,7 @@
       </v-col>
       <v-col cols="10">
         <v-cotainer>
-            <h1 class="_h1_main">Usuarios</h1>
+          <h1 class="_h1_main">Usuarios</h1>
           <v-row>
             <v-col v-for="i in users" :key="i.id" cols="3" class="my-3 px-3">
               <v-card
@@ -17,7 +17,6 @@
                 max-width="100%"
                 v-if="i.email != 'prueba@prueba.com'"
               >
-            
                 <v-card-text>
                   <h3>{{ i.email }}</h3>
                   <p>{{ i.name }}</p>
@@ -26,75 +25,144 @@
                   <v-btn
                     depressed
                     color="primary"
-                    @click="activeThisDialog(i.id)"
-                   
+                    @click="activeThisDialog(i.id, i.pass)"
                   >
                     Opciones
                   </v-btn>
-                  <v-dialog v-model="dialog" max-width="500">
-                    
+                  <v-dialog
+                    v-model="dialog"
+                    max-width="500"
+                    max-height="500"
+                    height="500"
+                  >
                     <v-card>
-                      <v-card-title>
-                        Agrega permisos a este usuario
-                      </v-card-title>
+                      <v-toolbar flat color="primary" dark>
+                        <v-toolbar-title>Perfil del usuario</v-toolbar-title>
+                      </v-toolbar>
+                      <v-tabs vertical>
+                        <v-tab>
+                          <v-icon left>
+                            mdi-account
+                          </v-icon>
+                          Permisos
+                        </v-tab>
+                        <v-tab>
+                          <v-icon left>
+                            mdi-lock
+                          </v-icon>
+                          Contraseña
+                        </v-tab>
 
-                      <v-container>
-                        <v-row>
-                          <v-col cols="12">
-                            <v-select
-                              :items="corps"
-                              v-model="corpAsig"
-                              name="corporativo"
-                              v-validate="'required'"
-                              item-text="name"
-                              item-value="id"
-                              label="Asignale un corporativo"
-                              outlined
-                              @change="getparques"
-                            />
-                          </v-col>
-                        </v-row>
-                        <v-row v-if="corpAsig != ''">
-                          <v-col cols="12">
-                            <v-select
-                              :items="parques"
-                              v-model="parqueasig"
-                              name="parque"
-                              v-validate="'required'"
-                              item-text="nombre_es"
-                              item-value="id"
-                              label="Asignale un parque"
-                              outlined
-                            />
-                          </v-col>
-                        </v-row>
-                        <v-row v-if="parqueasig != ''">
-                          <v-col cols="12">
-                            <v-select
-                              v-model="value"
-                              :items="items"
-                              chips
-                              label="Permisos del usuario"
-                              multiple
-                              outlined
-                            ></v-select>
-                          </v-col>
-                        </v-row>
-                      </v-container>
+                        <v-tab-item>
+                          <v-card>
+                            <v-card-title>
+                              Agrega permisos a este usuario
+                            </v-card-title>
 
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
+                            <v-container>
+                              <v-row>
+                                <v-col cols="12">
+                                  <v-select
+                                    :items="corps"
+                                    v-model="corpAsig"
+                                    name="corporativo"
+                                    v-validate="'required'"
+                                    item-text="name"
+                                    item-value="id"
+                                    label="Asignale un corporativo"
+                                    outlined
+                                    @change="getparques"
+                                  />
+                                </v-col>
+                              </v-row>
+                              <v-row v-if="corpAsig != ''">
+                                <v-col cols="12">
+                                  <v-select
+                                    :items="parques"
+                                    v-model="parqueasig"
+                                    name="parque"
+                                    v-validate="'required'"
+                                    item-text="nombre_es"
+                                    item-value="id"
+                                    label="Asignale un parque"
+                                    outlined
+                                  />
+                                </v-col>
+                              </v-row>
+                              <v-row v-if="parqueasig != ''">
+                                <v-col cols="12">
+                                  <v-select
+                                    v-model="value"
+                                    :items="items"
+                                    chips
+                                    label="Permisos del usuario"
+                                    multiple
+                                    outlined
+                                  ></v-select>
+                                </v-col>
+                              </v-row>
+                            </v-container>
 
-                        <v-btn color="error" text @click="dialog = false">
-                          Cancelar
-                        </v-btn>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
 
-                        <v-btn color="green darken-1" text @click="add(i.id)">
-                          Agregar 
-                        </v-btn>
-                        <br/>
-                        
-                      </v-card-actions>
+                              <v-btn color="error" text @click="dialog = false">
+                                Cancelar
+                              </v-btn>
+
+                              <v-btn
+                                color="green darken-1"
+                                text
+                                @click="add(i.id)"
+                              >
+                                Agregar
+                              </v-btn>
+                              <br />
+                            </v-card-actions>
+                          </v-card>
+                        </v-tab-item>
+                        <v-tab-item>
+                          <v-card>
+                            <v-card-title>
+                              Mirar la contraseña del usuario
+                            </v-card-title>
+
+                            <v-container>
+                              <v-row>
+                                <v-col cols="12">
+                                  <v-text-field
+                                    v-model="password"
+                                    :append-icon="
+                                      show1 ? 'mdi-eye' : 'mdi-eye-off'
+                                    "
+                                    :type="show1 ? 'text' : 'password'"
+                                    outlined
+                                    counter
+                                    @click:append="show1 = !show1"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+
+                              <v-btn color="error" text @click="dialog = false">
+                                Cancelar
+                              </v-btn>
+
+                              <v-btn
+                                color="green darken-1"
+                                text
+                                @click="add(i.id)"
+                              >
+                                Agregar
+                              </v-btn>
+                              <br />
+                            </v-card-actions>
+                          </v-card>
+                        </v-tab-item>
+                      </v-tabs>
                     </v-card>
                   </v-dialog>
                 </v-card-actions>
@@ -128,7 +196,9 @@ export default {
       parqueasig: "",
       roles: [],
       rolasign: "",
-      userIds:0
+      userIds: 0,
+      show1: false,
+      password:""
     };
   },
   beforeMount() {
@@ -205,10 +275,11 @@ export default {
         })
         .catch((e) => console.log(e));
     },
-    activeThisDialog(ids){
+    activeThisDialog(ids, pass) {
       this.userIds = ids;
-      this.dialog = true
-    }
+      this.dialog = true;
+      this.password = pass;
+    },
   },
 };
 </script>

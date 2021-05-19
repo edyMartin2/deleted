@@ -237,6 +237,7 @@ export default {
         phone: (value) => value.length <= 10 || "maximo 10 numeros",
         cp: (value) => value.length <= 5 || "maximo 5 numeros",
       },
+      
     };
   },
   methods: {
