@@ -260,7 +260,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- Nueva nave -->
+    <!-- Nuevo cotp -->
     <h1>gtgtg</h1>
     <v-dialog v-model="newCorp" max-width="730px">
       <v-card>
