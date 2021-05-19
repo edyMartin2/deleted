@@ -9,6 +9,7 @@
       </v-col>
       <v-col cols="10">
         <v-cotainer>
+            <h1 class="_h1_main">Usuarios</h1>
           <v-row>
             <v-col v-for="i in users" :key="i.id" cols="3" class="my-3 px-3">
               <v-card

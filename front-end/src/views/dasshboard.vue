@@ -8,6 +8,7 @@
         </v-app>
       </v-col>
       <v-col cols="10">
+        <h1 class="_h1_main">Datos de perfil</h1>
         <v-row justify="center" align="center" v-if="this.datas.id">
           <v-col cols="10">
             <v-card class="my-10">
@@ -24,20 +25,28 @@
 
                 <v-row justify="space-between">
                   <v-col cols="7" style="text-align: left">
-                    TIPO DE SOCIO :
-                    {{ this.datas.cargo }}
-                    <br />
-                    OFICINA :
-                    {{ this.datas.direccionDeOfficina }}
-                    <br />
-                    TELEFONO :
-                    {{ this.datas.telefonoOfficina }}
-                    <br />
-                    CELULAR :
-                    {{ this.datas.celular }}
-                    <br />
-                    FECHA DE NACIMIENTO :
-                    {{ this.datas.cumpleanios }}
+                    <div class="_cont_dash">
+                        <div class="_cont_value">  
+                            <div>TIPO DE SOCIO :</div>
+                            <div>{{ this.datas.cargo }}</div>
+                        </div>
+                        <div class="_cont_value">
+                            <div>OFICINA :</div>
+                            <div>{{ this.datas.direccionDeOfficina }}</div>
+                        </div>
+                        <div class="_cont_value">
+                            <div>TELEFONO :</div>
+                            <div>{{ this.datas.telefonoOfficina }}</div>
+                        </div>
+                        <div class="_cont_value">
+                            <div>CELULAR :</div>
+                            <div>{{ this.datas.celular }}</div>
+                        </div>
+                        <div class="_cont_value">
+                            <div>FECHA DE NACIMIENTO :</div>
+                            <div>{{ this.datas.cumpleanios }}</div>
+                        </div>
+                    </div>
                   </v-col>
                 </v-row>
               </v-card-text>
