@@ -49,6 +49,10 @@ h6,
     max-width: 160px !important;
     background-color: white;
 }
+._img_ampip._login {
+    max-width: 220px !important;
+    margin: auto;
+}
 .theme--dark.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
     color: #333333 !important;
 }
