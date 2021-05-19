@@ -52,7 +52,7 @@
             </v-col>
             <v-col cols="6">
               <v-text-field
-                label="C.P"
+                label="Codigo Postal"
                 placeholder="C.P"
                 outlined
                 v-model="corp.cp"
@@ -164,7 +164,6 @@ export default {
       .post(`${this.$store.state.url}/corp`, param)
       .then((res) => (this.corp = res.data))
       .catch((e) => console.log(e));
-      
   },
   methods: {
     update() {
@@ -210,25 +209,22 @@ export default {
     },
   },
 
-  computed : {
-    edo(){
-      if(this.cp.length > 0)
-      {
+  computed: {
+    edo() {
+      if (this.cp.length > 0) {
         return this.cp[0].response.estado;
-      } else{
+      } else {
         return "Sin datos";
       }
     },
-    mun(){
-      if(this.cp.length > 0)
-      {
+    mun() {
+      if (this.cp.length > 0) {
         return this.cp[0].response.municipio;
-      } else{
+      } else {
         return "Sin datos";
       }
-    }
-  }
-
+    }, 
+  },
 };
 </script>
 
