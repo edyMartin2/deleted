@@ -91,7 +91,7 @@
 
 <script>
 import dashboard from "../components/sideBar";
-import plusCard from "../components/plusCard";
+import plusCard from "../components/plusCard"; 
 import popupParque from "../components/popupParque";
 import axios from "axios";
 import VueCookies from "vue-cookies";

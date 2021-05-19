@@ -14,6 +14,7 @@
         <br />
       </v-card-text>
     </v-card>
+    <!-- Nueva nave -->
     <v-dialog v-model="newNave" max-width="730px">
       <v-card>
         <v-card-title>Agrega una nave</v-card-title>
@@ -50,6 +51,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- Nuevo parque -->
     <v-dialog v-model="newPark" max-width="730px">
       <v-card>
         <v-card-title>Agrega un parque</v-card-title>
@@ -258,6 +260,42 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- Nueva nave -->
+    <h1>gtgtg</h1>
+    <v-dialog v-model="newCorp" max-width="730px">
+      <v-card>
+        <v-card-title>Agrega un corporativo</v-card-title>
+        <v-container>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                label="Nombre en español"
+                outlined
+                placeholder="Nombre"
+                v-model="corp.name_es"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                label="Nombre en ingles"
+                outlined
+                placeholder="Nombre"
+                v-model="corp.name_en"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-card-actions>
+          <v-btn color="green darken-1" text @click="addparque">
+            Añadir
+          </v-btn>
+
+          <v-btn color="green darken-1" text @click="newPark = false">
+            Cancelar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -269,10 +307,11 @@ export default {
   data() {
     return {
       newNave: false,
+      newPark: false,
+      newCorp: false,
       name: "",
       parques: [],
       parque: "",
-      newPark: false,
       items: ["Privada", "Gubernamental"],
       menu1: false,
       date: "",
@@ -294,7 +333,21 @@ export default {
       parkIntoPark: 0,
       key_corp: null,
       infra: null,
-      markers: {"x":56.19605552778996,"y":111.13718986063111},
+      markers: { x: 56.19605552778996, y: 111.13718986063111 },
+      copr:{
+        name_es:"",
+        name__en:"", 
+        typeSociety:"",
+        address: "",
+        cp:"",
+        col:"",
+        edo:"",
+        cel:"",
+        logo:"",
+        inv_sig:"",
+        inv_act:"",
+        inv_ant:""
+      }
     };
   },
   props: ["dialogs"],
@@ -317,6 +370,9 @@ export default {
           break;
         case "newPark":
           this.newPark = !this.newPark;
+          break;
+        case "newCorp":
+          this.newCorp = !this.newCorp;
       }
     },
     addNave() {
@@ -361,8 +417,9 @@ export default {
         })
         .catch((e) => console.log(e));
     },
+    addCorp() {},
     add(target) {
-      this.markers =target.latLng.toJSON()
+      this.markers = target.latLng.toJSON();
     },
   },
 };
