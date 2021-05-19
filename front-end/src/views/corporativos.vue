@@ -13,7 +13,7 @@
             <v-col v-for="i in corps" :key="i" cols="3" class="my-3 px-3">
               <v-card class="mx-auto" max-width="100%">
                 <v-card-text>
-                  <p>{{ i.name }}</p>
+                  <h3>{{ i.name }}</h3>
                   <p v-if="i.rfc">{{ i.rfc}}</p>
                   <p v-if="i.rfc == null">Sin RFC</p>
                 </v-card-text>
