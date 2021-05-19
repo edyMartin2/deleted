@@ -1,0 +1,3 @@
+insert into ampip.user (id, email, full_name, password, status, date_created, pwd_reset_token, pwd_reset_token_creation_date, userForAmpip, typeOfUser)
+values  (1, 'prueba@prueba.com', 'ADMINISTRADOR', 'saG9uaE=', 1, '2021-04-05 13:31:09', '', '2021-04-08 14:12:08', 1, 1),
+        (42, 'edgar@space.bar', 'edgar vamerio martinez', 'gWaA', 1, '2021-04-09 14:03:24', '', '2021-04-12 13:43:38', null, 0);

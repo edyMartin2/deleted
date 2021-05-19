@@ -1,0 +1,2 @@
+insert into ampip.datosDelCorporativo (id, corporativo, nombre_es, nombre_en, tipoDeSocio, rfc, direccion, cp, colonia, estado, municipio, celular, logo, inversionAnualSiguiente, inversionRealizadaActual, inversionRealizadaAnterior, validadoPor, fechaDeValidacion, fechaDeAlta, fechaDeBaja, status, habilitar)
+values  (1, 'ampip', 'ampip', 'null', 'ampip', 'AMpip', 'ningyna', 55635, 'null', 'null', 'null', 'null', null, null, '1000', '1000000', null, null, null, null, '1', null);

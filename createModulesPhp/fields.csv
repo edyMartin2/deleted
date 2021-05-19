@@ -1,0 +1,13 @@
+id,integer
+corporativo,string 
+ubicacion,string 
+tipo,string 
+tipoDeDispo,string 
+uso,string 
+municipio,string 
+estado,string 
+web,string 
+contacto,string 
+precioPromedio,integer 
+datoDeContacto,string 
+nave_id,integer

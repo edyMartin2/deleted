@@ -1,0 +1,64 @@
+{
+    "name": "zfr/zfr-cors",
+    "description": "Zend Framework module that let you deal with CORS requests",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "zf2",
+        "zend framework",
+        "cors",
+        "rest",
+        "cross origin sharing resource"
+    ],
+    "homepage": "https://github.com/zf-fr/zfr-cors",
+    "authors": [
+        {
+            "name": "Florent Blaison",
+            "email": "florent.blaison@gmail.com"
+        },
+        {
+            "name": "Michaël Gallego",
+            "email": "mic.gallego@gmail.com",
+            "homepage": "http://www.michaelgallego.fr/"
+        }
+    ],
+    "extra": {
+        "zf": {
+            "module": "ZfrCors"
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "zendframework/zend-eventmanager": "^2.6.4 || ^3.2.1",
+        "zendframework/zend-http": "^2.10",
+        "zendframework/zend-mvc": "^2.7.15 || ^3.1.1",
+        "zendframework/zend-servicemanager": "^2.7.9 || ^3.4.0"
+    },
+    "require-dev": {
+        "zendframework/zend-i18n": "^2.9",
+        "zendframework/zend-log": "^2.10",
+        "zendframework/zend-modulemanager": "^2.7.2",
+        "zendframework/zend-serializer": "^2.8",
+        "zendframework/zend-view": "^2.8.1",
+        "phpunit/phpunit": "^7.5.9 || ^8.2.2",
+        "php-coveralls/php-coveralls": "^2.1",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZfrCors\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "ZfrCorsTest\\": "tests/"
+        }
+    },
+    "scripts": {
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-clover build/logs/clover.xml",
+        "upload-coverage": "php-coveralls -v"
+    }
+}
