@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",
     "gmap-vue": "^1.5.0",
+    "sweetalert2": "^11.0.8",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
     "vue-cryptojs": "^2.1.5",
