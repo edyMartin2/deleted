@@ -3,8 +3,13 @@
     <v-row justify="center" align="center" class="all">
       <v-col cols="10" md="5">
         <v-card>
-          <br />
-          <h1>AMPIP</h1>
+          <v-img
+      class="_img_ampip _login"
+        lazy-src="../assets/logo_ampip.svg"
+        max-height="150"
+        max-width="250"
+        src="../assets/logo_ampip.svg"
+        ></v-img>
           <v-container v-if="user == false">
             <v-row>
               <v-col cols="12">
