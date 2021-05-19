@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import dashboard from "../components/dashboard";
+import dashboard from "../components/sideBar";
 import VueCookies from "vue-cookies";
 import axios from "axios";
 var CryptoJS = require("crypto-js");

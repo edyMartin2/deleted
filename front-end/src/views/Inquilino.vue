@@ -34,7 +34,7 @@
 
 <script>
 import VueCookies from "vue-cookies";
-import dashboard from "../components/dashboard";
+import dashboard from "../components/sideBar";
 var CryptoJS = require("crypto-js");
 export default {
   name: "Inquilino",

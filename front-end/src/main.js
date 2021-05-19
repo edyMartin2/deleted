@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import VueCryptojs from 'vue-cryptojs'
 import * as VueGoogleMaps from 'gmap-vue'
+import('./assets/styles/ampip.css')
 
 Vue.use(VueGoogleMaps, {
   load: {

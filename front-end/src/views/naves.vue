@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import dashboard from "../components/dashboard";
+import dashboard from "../components/sideBar";
 import Card from "../components/card";
 var CryptoJS = require("crypto-js");
 import VueCookies from "vue-cookies";

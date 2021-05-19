@@ -1,5 +1,12 @@
 <template>
   <v-navigation-drawer class="deep-purple accent-4" dark permanent>
+      <v-img
+      class="_img_ampip"
+        lazy-src="../assets/logo_ampip.svg"
+        max-height="150"
+        max-width="250"
+        src="../assets/logo_ampip.svg"
+        ></v-img>
     <v-list style="" v-if="user_type == 'Administrator'">
       <v-list-item
         v-for="item in itemsadmin"
