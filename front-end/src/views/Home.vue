@@ -5,10 +5,10 @@
         <v-card>
           <v-img
             class="_img_ampip _login"
-            lazy-src="../assets/logo_ampip.svg"
+            lazy-src="http://localhost/img/logo_ampip.svg"
             max-height="150"
             max-width="250"
-            src="../assets/logo_ampip.svg"
+            src="http://localhost/img/logo_ampip.svg"
           ></v-img>
           <v-container v-if="user == false">
             <v-row>
