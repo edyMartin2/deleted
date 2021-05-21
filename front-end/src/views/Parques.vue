@@ -48,6 +48,7 @@
               <v-card
                   class="mx-auto"
                   max-width="100%"
+                  v-if="i.key_corp != 0"
               >
                 <v-card-text>
                   <h3>Parque</h3>

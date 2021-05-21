@@ -23,7 +23,7 @@
                   <v-btn
                     icon
                     color="red"
-                    v-if="i.status && i.id != 1"
+                    v-if="i.status "
                     @click="inactiveActive(i.id, 'i', 'c')"
                   >
                     <v-icon>

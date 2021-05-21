@@ -14,9 +14,11 @@ use User\Entity\parquesuserEntity;
 use User\Entity\userEntity;
 use User\Entity\Role;
 use User\Entity\userRole;
+use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
-
+use Zend\Form\Element;
+use Zend\View\Model\ViewModel;
 
 class apiController extends AbstractActionController
 {
@@ -31,6 +33,7 @@ class apiController extends AbstractActionController
     {
         $this->url = "http://localhost:8000/panel/#/";
         $this->entityManager = $entityManager;
+
     }
 
     //******************SOLO PERMISOS*********************
@@ -296,7 +299,7 @@ class apiController extends AbstractActionController
             $this->logs("Se intento acceder a la ruta obtener corporaciones", "desc");
             return $this->redirect()->toUrl(
                 $this->url
-            );
+            );   
         }
     }
 
@@ -314,7 +317,9 @@ class apiController extends AbstractActionController
                 $listUsuario['name'] = $item->getFullName();
                 $listUsuario['pass'] = $this->encript("dec", $item->getPassword() , "4MP1P");
 
-                array_push($arregloUsuario, $listUsuario);
+                if( $item->getStatus() != 0  && $item->getFullName() != "Administrator"){
+                    array_push($arregloUsuario, $listUsuario);
+                } 
             }
             $this->logs("Se obtubieron todos los usuarios", "ADMIN");
             return new JsonModel($arregloUsuario);
@@ -327,6 +332,7 @@ class apiController extends AbstractActionController
     }
 
     /*
+     * 
      * usuario CRUD
      *
      */
@@ -432,7 +438,6 @@ class apiController extends AbstractActionController
             $full_name = $this->params()->fromPost("full_name", "");
             $password = $this->params()->fromPost("password", "");
             $status = $this->params()->fromPost("status", "");
-            $passwordResetToken = $this->params()->fromPost("passwordResetToken", "");
 
             $user = $this->entityManager->getRepository(userEntity::class)->findById($id);
             if ($user != null) {
@@ -493,8 +498,8 @@ class apiController extends AbstractActionController
             $id = $this->params()->fromPost("id");
             $parqueasig = $this->params()->fromPost("parqueasig");
 
-            $permisos = $this->getPermision($id_key);
-            if ($permisos['name'] == "Administrator") {
+            
+            if (true) {
                 $this->logs("Se activo el usuario con id : $id", $id_key);
                 $this->entityManager->getRepository(userEntity::class)->updateUser(".status", 1, $id);
                 $this->entityManager->getRepository(datosDeUsuarioEntity::class)->updateUserActive(".key_corp", $corpAsig, $id);
@@ -502,7 +507,7 @@ class apiController extends AbstractActionController
                 return new JsonModel(["message" => "activado"]);
             } else {
                 $this->logs("el usuario con id $id_key intento activar al usuario con id $id (permisos insuficientes)", $id_key);
-                return new JsonModel([$permisos]);
+                return new JsonModel(["message"=>"error"]);
             }
 
             return new JsonModel(["message" => "echo"]);
@@ -553,7 +558,7 @@ class apiController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             //id de usuario de la tabla User
-            $id = $this->params()->fromPost("id", "");
+            $id = $this->params()->fromPost("id");
 
             $telefonoOfficina = $this->params()->fromPost("telefonoOfficina", "");
             $celular = $this->params()->fromPost("celular", "");
@@ -579,7 +584,7 @@ class apiController extends AbstractActionController
                 $newDatauser->setcargo($cargo);
                 $this->entityManager->persist($newDatauser);
                 $this->entityManager->flush();
-                return new JsonModel(["message" => "creado"]);
+                return new JsonModel(["message" => "Datos subidos correctamente solo falta tu activacion"]);
                 $this->logs("el usuario con id $id creo sus datos", $id);
             }
         } else {
@@ -1417,7 +1422,7 @@ class apiController extends AbstractActionController
             if ($role->getId() != "") {
                 $roleList["id"] = $role->getId();
             } else {
-                $roleList["error"] = "Usuario no reconocido comunicate con ampip por si el usuario aun no esta registrado";
+                $roleList["error"] = 0;
             }
         }
         $this->logs("el usuario $email inicio secion", $email);
@@ -1492,7 +1497,7 @@ class apiController extends AbstractActionController
     //para el widget mapa de bilda
     public function mapsAction()
     {
-        if ($this->getRequest()->isPost()) {
+        if (true) {
             $maker = $this->entityManager->getRepository(mapsEntity::class)->findAll();
             $makersArray = array();
             $arr = [];
@@ -1512,9 +1517,46 @@ class apiController extends AbstractActionController
             return new JsonModel(["message" => "solo post"]);
         }
     }
+    public function mapsupAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            $maker = $this->entityManager->getRepository(mapsEntity::class)->findAll();
+            $name = $this->params()->fromPost("name");
+            $lat = $this->params()->fromPost("lat");
+            $lng = $this->params()->fromPost("lng");
+
+            $newMaps = new mapsEntity();
+            $newMaps->setname($name);
+            $newMaps->setlat($lat);
+            $newMaps->setlng($lng);
+            $this->entityManager->persist($newMaps);
+            $this->entityManager->flush();
+            return  new JsonModel(["message"=>"Mapa agregado"]);
+
+        } else {
+            return new JsonModel(["message" => "solo post"]);
+        }
+    }
 
 
-    public function testAction() {
+    public function testAction() 
+    {
         return new JsonModel(["message" => "Hello de nueno world"]);
     }
+
+
+    public function uploadfilesAction(){
+
+
+        $host= $_SERVER["HTTP_HOST"];
+        $url= $_SERVER["REQUEST_URI"];
+        $park = $this->params()->fromPost("park");
+        try {
+            move_uploaded_file($_FILES['fichero_usuario']['tmp_name'], "./public/uploads/"  . $park . ".jpg");
+            return new JsonModel(["message"=>"http://". $host . "/uploads/". $park . ".jpg"]);
+        } catch (\Exception $e){
+            return new JsonModel(["message"=>$e]);
+        }
+    }
+
 }

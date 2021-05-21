@@ -11,12 +11,13 @@
         <v-cotainer>
           <h1 class="_h1_main">Usuarios</h1>
           <v-row>
-            <v-col v-for="i in users" :key="i.id" cols="3" class="my-3 px-3">
-              <v-card
-                class="mx-auto"
-                max-width="100%"
-                v-if="i.email != 'prueba@prueba.com'"
-              >
+            <v-col
+              v-for="(i, ke) in users"
+              :key="i.id"
+              cols="3"
+              class="my-3 px-3"
+            >
+              <v-card class="mx-auto" max-width="100%">
                 <v-card-text>
                   <h3>{{ i.email }}</h3>
                   <p>{{ i.name }}</p>
@@ -29,6 +30,10 @@
                   >
                     Opciones
                   </v-btn>
+                  <v-btn depressed color="primary" @click="deleteUser(ke)">
+                    Eliminar
+                  </v-btn>
+
                   <v-dialog
                     v-model="dialog"
                     max-width="500"
@@ -150,14 +155,6 @@
                               <v-btn color="error" text @click="dialog = false">
                                 Cancelar
                               </v-btn>
-
-                              <v-btn
-                                color="green darken-1"
-                                text
-                                @click="add(i.id)"
-                              >
-                                Agregar
-                              </v-btn>
                               <br />
                             </v-card-actions>
                           </v-card>
@@ -180,6 +177,7 @@ import VueCookies from "vue-cookies";
 var CryptoJS = require("crypto-js");
 import dashboard from "../components/sideBar";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: "usuarios",
@@ -198,7 +196,7 @@ export default {
       rolasign: "",
       userIds: 0,
       show1: false,
-      password:""
+      password: "",
     };
   },
   beforeMount() {
@@ -279,6 +277,39 @@ export default {
       this.userIds = ids;
       this.dialog = true;
       this.password = pass;
+    },
+    deleteUser(i) {
+      var name = this.users[i].name;
+      console.log(name);
+      var email = this.users[i].email;
+      var pass = this.users[i].pass;
+      var id = this.users[i].id;
+      var status = 0;
+
+      var data = new URLSearchParams();
+      data.append("name", name);
+      data.append("email", email);
+      data.append("pass", pass);
+      data.append("status", status);
+      data.append("id", id);
+      axios
+        .post(`${this.$store.state.url}/updateuser`, data)
+        .then(res =>
+          console.log(
+            Swal.fire({
+              icon: "success",
+              title: "",
+              text: res.data.message,
+              backdrop: `
+                  rgba(0,0,0,0.1)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+            })
+          )
+        )
+        .catch((e) => console.log(e));
     },
   },
 };

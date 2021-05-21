@@ -148,7 +148,7 @@ return [
                 ['actions' => '*', 'allow' => '+permission.manage']
             ],
             Controller\apiController::class =>[
-                ['actions' => ['login', 'corp','getinquilino','getdatauser','getpark','getnave','getallpark','getallnave','createdatauser','createpark', 'createuser', 'createcorp','createnave', 'updatecorp','updatepark','updateuser','updatenave', 'espacio','updatedatauser','setinquilino','updateinquilino', 'getall','getalluser', 'activeuser', 'getrole', 'getcargo', 'getallcorps', 'getallusercorp', 'encript', 'getuseridlogin', 'getparks', 'setpermisos','getparquesusuarios','activeinactive','maps', 'test'], 'allow' => '*']
+                ['actions' => ['login', 'corp','getinquilino','getdatauser','getpark','getnave','getallpark','getallnave','createdatauser','createpark', 'createuser', 'createcorp','createnave', 'updatecorp','updatepark','updateuser','updatenave', 'espacio','updatedatauser','setinquilino','updateinquilino', 'getall','getalluser', 'activeuser', 'getrole', 'getcargo', 'getallcorps', 'getallusercorp', 'encript', 'getuseridlogin', 'getparks', 'setpermisos','getparquesusuarios','activeinactive','maps', 'test', 'uploadfiles', 'mapsup'], 'allow' => '*']
             ]
         ]
     ],

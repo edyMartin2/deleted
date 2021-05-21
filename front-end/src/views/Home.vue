@@ -4,12 +4,12 @@
       <v-col cols="10" md="5">
         <v-card>
           <v-img
-      class="_img_ampip _login"
-        lazy-src="../assets/logo_ampip.svg"
-        max-height="150"
-        max-width="250"
-        src="../assets/logo_ampip.svg"
-        ></v-img>
+            class="_img_ampip _login"
+            lazy-src="../assets/logo_ampip.svg"
+            max-height="150"
+            max-width="250"
+            src="../assets/logo_ampip.svg"
+          ></v-img>
           <v-container v-if="user == false">
             <v-row>
               <v-col cols="12">
@@ -34,8 +34,7 @@
             <v-col cols="12">
               <v-btn color="success" @click="login">Iniciar secion</v-btn>
               <br />
-              <a @click="forgetPass">Olvide mi contraseña</a> <small>°</small>
-              <a @click="createUser">Hacerme socio</a>
+              <!-- <a @click="forgetPass">Olvide mi contraseña</a> <small>°</small> -->
             </v-col>
           </v-container>
           <v-container v-if="user == true">
@@ -189,6 +188,12 @@
               </v-card-actions>
             </v-row>
           </v-container>
+
+          <v-card-actions>
+            <v-btn @click="createUser" text  color="red lighten-2" v-if="steep != 1"
+              >Hacerme socio</v-btn
+            >
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -223,7 +228,7 @@ export default {
         edo: "",
         mun: "",
       },
-      menu:false,
+      menu: false,
       lastName: "",
       ex11: 0,
       rules: {
@@ -237,7 +242,7 @@ export default {
         phone: (value) => value.length <= 10 || "maximo 10 numeros",
         cp: (value) => value.length <= 5 || "maximo 5 numeros",
       },
-      
+      steep:0
     };
   },
   methods: {
@@ -287,6 +292,7 @@ export default {
     },
     createUser() {
       this.user = !this.user;
+      this.steep = 1;
     },
     upUser() {
       if (this.user != "" && this.email != "" && this.pass != "") {
@@ -306,6 +312,21 @@ export default {
                 .post(`${this.$store.state.url}/getuseridlogin`, params)
                 .then((resDos) => {
                   console.log(resDos.data);
+                  if (resDos.data[0].id) {
+                    this.upData(resDos.data[0].id);
+                  } else {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Ooops ...",
+                      text: resDos.data[0].error,
+                      backdrop: `
+                        rgba(255,0,0,0.1)
+                        url("/images/nyan-cat.gif")
+                        left top
+                        no-repeat
+                        `,
+                    });
+                  }
                 })
                 .catch((e) => {
                   Swal.fire({
@@ -367,7 +388,7 @@ export default {
             Swal.fire({
               icon: "success",
               title: "Gracias",
-              text: "Has quedado registrado solo falta tu activacion",
+              text: res.data.message,
               backdrop: `
                   rgba(0,255,0,0.1)
                   url("/images/nyan-cat.gif")
@@ -376,20 +397,24 @@ export default {
                 `,
             });
             this.$router.push("/dasshboard");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Opps",
+              text: res.data.message,
+              backdrop: `
+                  rgba(0,255,0,0.1)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+            });
           }
         })
         .catch((e) => console.log(e));
     },
     forgetPass() {
-      Swal.fire({
-        title: "هل تريد الاستمرار؟",
-        icon: "question",
-        iconHtml: "؟",
-        confirmButtonText: "نعم",
-        cancelButtonText: "لا",
-        showCancelButton: true,
-        showCloseButton: true,
-      });
+     
 
       Swal.fire({
         title: "Ingresa tu correo electronico",

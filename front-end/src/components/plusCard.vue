@@ -72,7 +72,18 @@
               >
               </v-text-field>
             </v-col>
-
+            <v-col cols="12">
+              <v-select
+                :items="corps"
+                label="Corporativo"
+                placeholder="Corporativo"
+                outlined
+                v-model="key_corp"
+                :rules="[rules.required]"
+                item-text="name"
+                item-value="id"
+              ></v-select>
+            </v-col>
             <v-col cols="6">
               <v-text-field
                 label="Administrador"
@@ -267,7 +278,7 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Nombre" 
+                label="Nombre"
                 :rules="[rules.required]"
                 v-model="corp.name_es"
               ></v-text-field>
@@ -275,15 +286,16 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Nombre en ingles" 
+                label="Nombre en ingles"
                 :rules="[rules.required]"
                 v-model="corp.name_en"
               ></v-text-field>
             </v-col>
+
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Tipo de socio" 
+                label="Tipo de socio"
                 :rules="[rules.required]"
                 v-model="corp.type"
               ></v-text-field>
@@ -292,7 +304,7 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Codigo postal" 
+                label="Codigo postal"
                 :rules="[rules.required]"
                 v-model="corp.cp"
                 @keyup="watchCp"
@@ -302,7 +314,7 @@
               <v-select
                 :items="cp"
                 label="Colonia"
-                placeholder="Colonia" 
+                placeholder="Colonia"
                 :rules="[rules.required]"
                 outlined
                 v-model="corp.col"
@@ -313,7 +325,7 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Estado" 
+                label="Estado"
                 :rules="[rules.required]"
                 v-model="edo"
                 disabled
@@ -322,20 +334,24 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Municipio" 
+                label="Municipio"
                 :rules="[rules.required]"
                 v-model="mun"
                 disabled
               ></v-text-field>
             </v-col>
             <v-col md="2">
-              <v-select :items="lada" label="Lada" outlined 
-              :rules="[rules.required]"></v-select>
+              <v-select
+                :items="lada"
+                label="Lada"
+                outlined
+                :rules="[rules.required]"
+              ></v-select>
             </v-col>
             <v-col md="10">
               <v-text-field
                 outlined
-                label="Numero de telefono" 
+                label="Numero de telefono"
                 :rules="[rules.required]"
                 v-model="corp.cel"
                 type="number"
@@ -344,7 +360,7 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Inversion actual en miles de pesos" 
+                label="Inversion actual en miles de pesos"
                 :rules="[rules.required]"
                 v-model="corp.inv_act"
                 type="number"
@@ -353,7 +369,7 @@
             <v-col md="6">
               <v-text-field
                 outlined
-                label="Inversion siguiente en miles de pesos" 
+                label="Inversion siguiente en miles de pesos"
                 :rules="[rules.required]"
                 type="number"
                 v-model="corp.inv_ant"
@@ -362,7 +378,7 @@
             <v-col md="12">
               <v-text-field
                 outlined
-                label="Inversion anterior en miles de pesos" 
+                label="Inversion anterior en miles de pesos"
                 :rules="[rules.required]"
                 type="number"
                 v-model="corp.inv_sig"
@@ -422,7 +438,7 @@ export default {
       parkIntoPark: 0,
       key_corp: null,
       infra: null,
-      markers: { x: 56.19605552778996, y: 111.13718986063111 },
+      markers: { lat: 56.19605552778996, lng: 111.13718986063111 },
       corp: {
         lada: "",
         name_es: "",
@@ -451,6 +467,7 @@ export default {
         phone: (value) => value.length <= 10 || "maximo 10 numeros",
         cp: (value) => value.length <= 5 || "maximo 5 numeros",
       },
+      corps: [],
     };
   },
   props: ["dialogs"],
@@ -472,6 +489,10 @@ export default {
             .catch((e) => console.log(e));
           break;
         case "newPark":
+          axios
+            .post(`${this.$store.state.url}/getallcorps`)
+            .then((res) => (this.corps = res.data))
+            .catch((e) => console.log(e));
           this.newPark = !this.newPark;
           break;
         case "newCorp":
@@ -498,7 +519,7 @@ export default {
     },
     addparque() {
       var params = new URLSearchParams();
-      params.append("key_corp", this.$store.state.data.key_corp);
+      params.append("key_corp", this.key_corp);
       params.append("nombre_es", this.name_es);
       params.append("nombre_en", this.name_en);
       params.append("adminParq", this.admins);
@@ -516,7 +537,38 @@ export default {
       axios
         .post(`${this.$store.state.url}/createpark`, params)
         .then((res) => {
-          console.log(res.data);
+          if (res.data.message == "Listo") {
+            let data = new URLSearchParams();
+            data.append("name",this.name_es);
+            data.append("lat",this.markers.lat);
+            data.append("lng",this.markers.lng);
+
+            axios.post(`${this.$store.state.url}/mapsup`, data).then(res => {
+              Swal.fire({
+              icon: "success",
+              title: "Listo",
+              text: res.data,
+              backdrop: `
+                  rgba(0,0,0,255.01)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+            });
+            }).catch(e => console.log(e));
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ooops ...",
+              text: res.data.err,
+              backdrop: `
+                  rgba(255,0,0,0.1)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+            });
+          }
         })
         .catch((e) => console.log(e));
     },
@@ -572,18 +624,18 @@ export default {
             console.log(res.data);
           })
           .catch((e) => console.log(e));
-      } else{
+      } else {
         Swal.fire({
-                icon: "error",
-                title: "Ooops ...",
-                text: "Por favor asegurate de llenar todos los datos",
-                backdrop: `
+          icon: "error",
+          title: "Ooops ...",
+          text: "Por favor asegurate de llenar todos los datos",
+          backdrop: `
                   rgba(255,0,0,0.1)
                   url("/images/nyan-cat.gif")
                   left top
                   no-repeat
                 `,
-              });
+        });
       }
     },
   },

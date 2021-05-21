@@ -28,7 +28,6 @@
             ></v-switch
           ></v-toolbar-title>
           <v-spacer></v-spacer>
-          
         </v-toolbar>
         <v-container-fluid>
           <v-row>
@@ -152,6 +151,70 @@
                   </v-list>
                 </v-card-text>
               </v-card>
+
+              <v-container>
+                <v-row>
+                  <v-col cols="6">
+                    <v-card-title>
+                      Imagen primaria
+                    </v-card-title>
+                    <v-card>
+                      <v-img
+                        src="https://picsum.photos/350/165?random"
+                        height="125"
+                        class="grey darken-4"
+                      ></v-img>
+                      <v-card-title class="title">
+                        <v-file-input
+                          label="Remplaza imagen"
+                          outlined
+                          dense
+                        ></v-file-input>
+                      </v-card-title>
+                    </v-card>
+                  </v-col>
+
+                   <v-col cols="6">
+                    <v-card-title>
+                      Imagen secundaria
+                    </v-card-title>
+                    <v-card>
+                      <v-img
+                        src="https://picsum.photos/350/165?random"
+                        height="125"
+                        class="grey darken-4"
+                      ></v-img>
+                      <v-card-title class="title">
+                        <v-file-input
+                          label="Remplaza imagen"
+                          outlined
+                          dense
+                        ></v-file-input>
+                      </v-card-title>
+                    </v-card>
+                  </v-col>
+
+                   <v-col cols="12">
+                    <v-card-title>
+                      Imagen extra
+                    </v-card-title>
+                    <v-card>
+                      <v-img
+                        src="https://picsum.photos/350/165?random"
+                        height="125"
+                        class="grey darken-4"
+                      ></v-img>
+                      <v-card-title class="title">
+                        <v-file-input
+                          label="Remplaza imagen"
+                          outlined
+                          dense
+                        ></v-file-input>
+                      </v-card-title>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-col>
             <v-col cols="12" md="4">
               <v-card class="my-4">
