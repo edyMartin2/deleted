@@ -101,7 +101,7 @@ final class Versions
   'zendframework/zend-view' => '2.11.4@a8b1b2d9b52e191539be861a6529f8c8a0c06b9d',
   'zfcampus/zf-development-mode' => '3.2.0@419004a320bab017d28f2bc5e7857dde7e19aecf',
   'zfr/zfr-cors' => 'v2.0.0@cb7c2663a2f4873ba3d5f7887c2ad4b5c2b25edd',
-  'zendframework/skeleton-application' => 'dev-main@7f001c2ba79c5b866a75aed8a9ced7de41033ea2',
+  'zendframework/skeleton-application' => 'dev-edgar@c5c3fe5cb8ef84d8b2508a3a5a0cd6d155274347',
 );
 
     private function __construct()
