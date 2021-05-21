@@ -2,10 +2,10 @@
   <v-navigation-drawer class="_cont_aside" dark permanent>
       <v-img
       class="_img_ampip"
-        lazy-src="http://localhost/img/logo_ampip.svg"
+        lazy-src="http://18.207.162.106/img/logo_ampip.svg"
         max-height="150"
         max-width="250"
-        src="http://localhost/img/logo_ampip.svg"
+        src="http://18.207.162.106/img/logo_ampip.svg"
         ></v-img>
     <v-list style="" v-if="user_type == 'Administrator'">
       <v-list-item
