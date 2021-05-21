@@ -61,7 +61,7 @@
                   >Administrar</v-btn
                 >
 
-                <v-btn @click="getGoogle">Google</v-btn>
+                <v-btn @click="getGoogle" v-show="false">Google</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>

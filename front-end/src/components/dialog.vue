@@ -88,16 +88,21 @@
                 :rules="[rules.required]"
                 v-model="mun"
               ></v-text-field>
+              <a> Telefono actual con lada: {{corp.celular}}</a>
             </v-col>
             <v-col cols="3">
               <v-select
                 :items="items"
                 label="Lada"
                 outlined
+                v-model="corp.lada"
                 :rules="[rules.required]"
               ></v-select>
             </v-col>
+            
             <v-col cols="9">
+              
+              
               <v-text-field
                 label="Telefono"
                 placeholder="Telefono"
@@ -128,7 +133,7 @@
 import axios from "axios";
 var CryptoJS = require("crypto-js");
 import VueCookies from "vue-cookies";
-
+import Swal from "sweetalert2";
 export default {
   name: "dialog.vue",
   data() {
@@ -146,6 +151,7 @@ export default {
         municipio: "",
         celular: "",
         logo: "",
+        lada:""
       },
       items: ["+52", "+1"],
       rules: {
@@ -180,18 +186,27 @@ export default {
       params.append("colonia", this.corp.colonia);
       params.append("estado", this.corp.estado);
       params.append("municipio", this.corp.municipio);
-      params.append("telefono", this.corp.celular);
-      params.append("rfc", this.corp.rfc);
+      params.append("telefono", "("+this.corp.lada + ")" + this.corp.celular);
+      params.append("rfc", this.corp.rfc); 
 
       axios
         .post(`${this.$store.state.url}/updatecorp`, params)
         .then((res) => {
-          console.log(res.data);
+           Swal.fire({
+              icon: "success",
+              title: "Listo",
+              text: res.data.message,
+              backdrop: `
+                  rgba(0,0,0,.01)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+            });
         })
         .catch((e) => {
           console.log(e);
         });
-      alert(originalText + "  " + this.corp.id);
       this.dialog = false;
     },
 

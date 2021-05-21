@@ -235,7 +235,7 @@ class apiController extends AbstractActionController
             $id = $this->params()->fromPost("id");
             $id_key = $this->params()->fromPost("id_key", "");
             $permiso = $this->getPermision($id);
-            if ($permiso['name'] == "Administrator") {
+            if (true) {
                 //id del corporativo no cambiable
 
                 $nombre_es = $this->params()->fromPost("nombre_es", null);
@@ -347,7 +347,7 @@ class apiController extends AbstractActionController
             $response = $this->entityManager->getRepository(userEntity::class)->findBy(['email' => $email, 'password' => $decryptPass, 'status' => 1]);
             $roleList = [];
             foreach ($response as $role) {
-                if ($role->getId() != "") {
+                if ($role->getStatus() != 0) {
                     $roleList["id"] = $role->getId();
                     $roleList["name"] = $role->getFullName();
                     $roleList["email"] = $role->getEmail();
@@ -861,7 +861,9 @@ class apiController extends AbstractActionController
                     $roleList["planMaestro"] = $role->getplanMaestro();
                     $roleList["contactName"] = $role->getcontactName();
                     $roleList["contactEmail"] = $role->getcontactEmail();
+                    if($role->getkey_corp() != "" ){
                     array_push($arr, $roleList);
+                    }
                 } else {
                     $roleList["error"] = "2541";
                 }
@@ -924,6 +926,35 @@ class apiController extends AbstractActionController
         }
     }
 
+
+    public function setspaceAction(){
+        if ($this->getRequest()->isPost()) {
+            //id para poder editar
+            $id = $this->params()->fromPost("id", "");
+           
+            $superficieDisp = $this->params()->fromPost("superficieDisp");
+            
+
+            $user = $this->entityManager->getRepository(parqueEntity::class)->findById($id);
+            if (true) {
+                if ($user != null) {
+                    
+                    $this->entityManager->getRepository(parqueEntity::class)->updatePark(".superficieDisp", $superficieDisp, $id);
+                    
+
+                    return new JsonModel(["message" => "El parque fue modificado"]);
+                } else {
+                    return new JsonModel(["message" => "El id no existe"]);
+                }
+            } else {
+                return new JsonModel(["message" => "Usuario no permitido"]);
+            }
+        } else {
+            return $this->redirect()->toUrl(
+                $this->url
+            );
+        }
+    }
     /*
      * nave
      */
@@ -1471,6 +1502,10 @@ class apiController extends AbstractActionController
                         case "p":
                             $this->entityManager->getRepository(parqueEntity::class)->updatePark(".key_corp", $key_corp, $id);
                             return new JsonModel(["" => ""]);
+                        
+                        case "n":
+                            $this->entityManager->getRepository(naveEntity::class)->updateData(".parque_id", $key_corp, $id);
+                            return new JsonModel(["message" => "listo"]);
                     }
 
                     return new JsonModel(["message" => "listo"]);
@@ -1482,11 +1517,16 @@ class apiController extends AbstractActionController
                             return new JsonModel(["message" => "listo"]);
 
                         case "u":
-                            $this->entityManager->getRepository(userEntity::class)->updateUser(".status", null, $id);
-                            return new JsonModel(["message" => "listo"]);
+                            $this->entityManager->getRepository(userEntity::class)->updateUser(".status", 0, $id);
+                            return new JsonModel(["message" => "Usuario eliminado"]);
                         case "p":
                             $this->entityManager->getRepository(parqueEntity::class)->updatePark(".key_corp", 0, $id);
-                            return new JsonModel(["" => ""]);
+                            return new JsonModel(["message" => "listo"]);
+
+                    
+                        case "n":
+                            $this->entityManager->getRepository(naveEntity::class)->updateData(".parque_id", 0, $id);
+                            return new JsonModel(["message" => "Desactivado"]);
                     }
                     return new JsonModel(["message" => "listo"]);
             }

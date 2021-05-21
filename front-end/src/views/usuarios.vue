@@ -12,7 +12,7 @@
           <h1 class="_h1_main">Usuarios</h1>
           <v-row>
             <v-col
-              v-for="(i, ke) in users"
+              v-for="(i) in users"
               :key="i.id"
               cols="3"
               class="my-3 px-3"
@@ -30,7 +30,7 @@
                   >
                     Opciones
                   </v-btn>
-                  <v-btn depressed color="primary" @click="deleteUser(ke)">
+                  <v-btn depressed color="primary" @click="deleteUser(i.id)">
                     Eliminar
                   </v-btn>
 
@@ -278,37 +278,27 @@ export default {
       this.dialog = true;
       this.password = pass;
     },
-    deleteUser(i) {
-      var name = this.users[i].name;
-      console.log(name);
-      var email = this.users[i].email;
-      var pass = this.users[i].pass;
-      var id = this.users[i].id;
-      var status = 0;
 
+    deleteUser(id) {
       var data = new URLSearchParams();
-      data.append("name", name);
-      data.append("email", email);
-      data.append("pass", pass);
-      data.append("status", status);
+      data.append("type", "i");
+      data.append("table", "u");
       data.append("id", id);
       axios
-        .post(`${this.$store.state.url}/updateuser`, data)
-        .then(res =>
-          console.log(
-            Swal.fire({
-              icon: "success",
-              title: "",
-              text: res.data.message,
-              backdrop: `
-                  rgba(0,0,0,0.1)
+        .post(`${this.$store.state.url}/activeinactive`, data)
+        .then((res) => {
+          Swal.fire({
+            icon: "success",
+            title: "Listo",
+            text: res.data.message,
+            backdrop: `
+                  rgba(0,0,0,.01)
                   url("/images/nyan-cat.gif")
                   left top
                   no-repeat
                 `,
-            })
-          )
-        )
+          });
+        })
         .catch((e) => console.log(e));
     },
   },

@@ -97,6 +97,7 @@ import plusCard from "../components/plusCard";
 import popupParque from "../components/popupParque";
 import axios from "axios";
 import VueCookies from "vue-cookies";
+import Swal from "sweetalert2";
 import PopupParque from "../components/popupParque";
 var CryptoJS = require("crypto-js");
 export default {
@@ -129,8 +130,33 @@ name: "Parques",
           return true
         }
       }
+    },
+    deleteParque(id){
+      var data = new URLSearchParams();
+      data.append("type","i");
+      data.append("table","p");
+      data.append("id",id);
+      axios.post(`${this.$store.state.url}/activeinactive`, data).then( res =>{
+
+
+           Swal.fire({
+              icon: "success",
+              title: "Listo",
+              text: res.data.message,
+              backdrop: `
+                  rgba(0,0,0,.01)
+                  url("/images/nyan-cat.gif")
+                  left top
+                  no-repeat
+                `,
+            });
+
+
+      }).catch( e => console.log(e));
+      
     }
-  }
+  },
+
 }
 </script>
 

@@ -26,14 +26,44 @@
                 placeholder="Nombre"
                 v-model="name"
               ></v-text-field>
-              <br />
-              <label for="cars">Selecciona el parque : </label>
-              <select name="cars" id="cars" v-model="parque">
-                <option value="">Selecciona</option>
-                <option v-for="i in parques" :key="i" :value="i.id">{{
-                  i.nombre_es
-                }}</option>
-              </select>
+            </v-col>
+
+            <v-col cols="12">
+              <v-select
+                :items="parques"
+                label="Selecciona un parque"
+                placeholder="Parque"
+                outlined
+                v-model="parque"
+                :rules="[rules.required]"
+                item-text="nombre_es"
+                item-value="id"
+                @change="getParks"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="6" v-if="park">
+              <v-progress-circular
+                :rotate="360"
+                :size="200"
+                :width="15"
+                :value="park"
+                color="purple"
+                class="my-5"
+              >
+                {{ park }} KM
+              </v-progress-circular>
+            </v-col>
+            <v-col cols="6" v-if="park">
+              <v-text-field
+                outlined
+                v-model="restEsp"
+                label="Espacio para añadir"
+                :rules="[rules.waitingSpace]"
+              >
+              </v-text-field>
+              Espacio restante al final de la operacion <br />
+              {{ restEspComputed }} KM
             </v-col>
           </v-row>
         </v-container>
@@ -410,12 +440,13 @@ export default {
 
   data() {
     return {
+      restEsp: null,
       lada: ["+52", "+1"],
       newNave: false,
       newCorp: false,
       name: "",
       parques: [],
-      parque: "",
+      parque: false,
       newPark: false,
       items: ["Privada", "Gubernamental"],
       menu1: false,
@@ -466,8 +497,11 @@ export default {
         counterThre: (value) => value.length >= 3 || "Minimo 3 caracteres",
         phone: (value) => value.length <= 10 || "maximo 10 numeros",
         cp: (value) => value.length <= 5 || "maximo 5 numeros",
+        waitingSpace: (value) => value <= this.park || "Espacio insuficiente",
       },
       corps: [],
+
+      park: false,
     };
   },
   props: ["dialogs"],
@@ -509,7 +543,14 @@ export default {
           .post(`${this.$store.state.url}/createnave`, params)
           .then((res) => {
             if (res.data.message === "Creado") {
-              ctx.$router.push("/");
+              alert("ce")
+              let data = new URLSearchParams();
+              data.append("id", ctx.parque);
+              data.append("superficieDisp", ctx.park - ctx.restEsp);
+              axios
+                .post(`${this.$store.state.url}/setspace`)
+                .then((res) => console.log(res))
+                .catch((e) => console.log(e));
             }
           })
           .catch((e) => console.log(e));
@@ -539,23 +580,26 @@ export default {
         .then((res) => {
           if (res.data.message == "Listo") {
             let data = new URLSearchParams();
-            data.append("name",this.name_es);
-            data.append("lat",this.markers.lat);
-            data.append("lng",this.markers.lng);
+            data.append("name", this.name_es);
+            data.append("lat", this.markers.lat);
+            data.append("lng", this.markers.lng);
 
-            axios.post(`${this.$store.state.url}/mapsup`, data).then(res => {
-              Swal.fire({
-              icon: "success",
-              title: "Listo",
-              text: res.data,
-              backdrop: `
-                  rgba(0,0,0,255.01)
+            axios
+              .post(`${this.$store.state.url}/mapsup`, data)
+              .then((res) => {
+                Swal.fire({
+                  icon: "success",
+                  title: "Listo",
+                  text: res.data.message,
+                  backdrop: `
+                  rgba(0,0,0,.01)
                   url("/images/nyan-cat.gif")
                   left top
                   no-repeat
                 `,
-            });
-            }).catch(e => console.log(e));
+                });
+              })
+              .catch((e) => console.log(e));
           } else {
             Swal.fire({
               icon: "error",
@@ -598,7 +642,7 @@ export default {
       params.append("estado", this.edo);
       params.append("municipio", this.mun);
       /*  */
-      params.append("celular", this.corp.lada + " " + this.corp.cel);
+      params.append("celular", "(" + this.corp.lada + ")" + this.corp.cel);
       params.append("inversionRealizadaAnterior", this.corp.inv_ant);
       params.append("inversionRealizadaActual", this.corp.inv_act);
       params.append("inversionAnualSiguiente", this.corp.inv_sig);
@@ -638,6 +682,15 @@ export default {
         });
       }
     },
+
+    getParks() {
+      var data = new URLSearchParams();
+      data.append("id", this.parque);
+      axios
+        .post(`${this.$store.state.url}/getpark`, data)
+        .then((res) => (this.park = res.data[0].superficieDisp))
+        .catch((e) => console.log(e));
+    },
   },
   computed: {
     edo() {
@@ -653,6 +706,9 @@ export default {
       } else {
         return "Sin datos";
       }
+    },
+    restEspComputed() {
+      return this.park - this.restEsp;
     },
   },
 };

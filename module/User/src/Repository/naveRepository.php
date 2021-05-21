@@ -26,4 +26,19 @@ class naveRepository extends EntityRepository
         $js = json_encode($arr);
         return $js;
     }
+
+    public function updateData($campo,$valor, $id){
+        $entityManager = $this->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        $queryBuilder->update(naveEntity::class,'u')
+            ->set('u'.$campo, '?1')
+            ->setParameter(1,$valor)
+            ->where('u.id = ?2')
+            ->setParameter(2, $id)
+            ->getQuery()
+
+            ->getSingleScalarResult();
+        return true;
+    }
 }
